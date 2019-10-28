@@ -31,10 +31,11 @@ static contextType = BookmarksContext;
 
   componentDidMount() {
     const { bookmarkId } = this.props.match.params
-    fetch(config.API_ENDPOINT + `${bookmarkId}`, {
+    fetch(config.API_ENDPOINT + `/${bookmarkId}`, {
       method: 'GET',
       headers: {
-        'authorization':`Bearer ${config.API_KEY}`
+        'Content-type': 'application/json',
+        'Authorization':`Bearer ${config.API_KEY}`
       }
     })
       .then(res => {
@@ -81,12 +82,12 @@ static contextType = BookmarksContext;
     const { id, title, url, description, rating } = this.state
     const newBookmark = { id, title, url, description, rating }
  
-    fetch(config.API_ENDPOINT + `${bookmarkId}`, {
+    fetch(config.API_ENDPOINT + `/${bookmarkId}`, {
       method: 'PATCH',
       body: JSON.stringify(newBookmark),
       headers: {
         'content-type': 'application/json',
-        'authorization': `Bearer ${config.API_KEY}`
+        'Authorization': `Bearer ${config.API_KEY}`
       },
     })
     .then(res => {
@@ -95,7 +96,9 @@ static contextType = BookmarksContext;
     })
     .then(responseData => {
       console.log('response data: ', responseData)
+      this.resetFields(newBookmark)
       this.context.updateBookmark(responseData)
+      this.props.history.push('/')
     })
     .catch(error => {
       console.error(error)
@@ -103,12 +106,36 @@ static contextType = BookmarksContext;
   })
 }
 
+resetFields = (newFields) => {
+  this.setState({
+    id: newFields.id || '',
+    title: newFields.title || '',
+    url: newFields.url || '',
+    description: newFields.description || '',
+    rating: newFields.rating || '',
+  })
+}
+
+handleClickCancel = () => {
+  this.props.history.push('/')
+}
+
   render() {
-    const { title, url, description, rating } = this.state
+    const { error, title, url, description, rating } = this.state
     return (
       <section className="EditBookmarkForm">
         <h2>Edit Bookmark</h2>
-        <form onSubmit={this.handleSubmit}>
+        <form
+          className='EditBookmark__form'
+          onSubmit={this.handleSubmit}
+        >
+          <div className="EditBookmark__error" role='alert'>
+            {error && <p>{error.message}</p>}
+          </div>
+          <input
+            type='hidden'
+            name='id'
+          />
           <div>
             <label htmlFor='title'>
               Title
@@ -168,6 +195,15 @@ static contextType = BookmarksContext;
               value={rating}
               onChange={this.handleChangeRating}
             />
+          </div>
+          <div className="EditBookmark__buttons">
+            <button type='button' onClick={this.handleClickCancel}>
+              Cancel
+            </button>
+            {' '}
+            <button type='submit'>
+              Save
+            </button>
           </div>
         </form>
       </section>
