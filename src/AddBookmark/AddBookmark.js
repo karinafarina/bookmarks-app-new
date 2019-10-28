@@ -36,7 +36,7 @@ class AddBookmark extends Component {
       method: 'POST',
       body: JSON.stringify(bookmark),
       headers: {
-        'Content-type': 'application/json',
+        'content-type': 'application/json',
         'Authorization': `Bearer ${config.API_KEY}`
       }
     })

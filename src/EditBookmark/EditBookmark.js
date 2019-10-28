@@ -34,7 +34,7 @@ static contextType = BookmarksContext;
     fetch(config.API_ENDPOINT + `/${bookmarkId}`, {
       method: 'GET',
       headers: {
-        'Content-type': 'application/json',
+        'content-type': 'application/json',
         'Authorization':`Bearer ${config.API_KEY}`
       }
     })

@@ -51,7 +51,7 @@ class App extends Component {
     fetch(config.API_ENDPOINT, {
       method: 'GET',
       headers: {
-        'Content-type': 'application/json',
+        'content-type': 'application/json',
         'Authorization': `Bearer ${config.API_KEY}`
       }
     })
