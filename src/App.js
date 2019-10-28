@@ -36,7 +36,16 @@ class App extends Component {
     })
   }
 
-  updateBookmark = () => {};
+  updateBookmark = updatedBookmark => {
+    const newBookmarks = this.state.bookmarks.map(bookmark => 
+      (bookmark.id === updatedBookmark.id)
+        ? updatedBookmark
+        : bookmark
+      )
+      this.setState({
+        bookmarks: newBookmarks
+      })
+  };
 
   componentDidMount() {
     fetch(config.API_ENDPOINT, {
