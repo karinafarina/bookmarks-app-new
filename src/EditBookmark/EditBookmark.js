@@ -81,6 +81,7 @@ static contextType = BookmarksContext;
     const { bookmarkId } = this.props.match.params
     const { id, title, url, description, rating } = this.state
     const newBookmark = { id, title, url, description, rating }
+    console.log('newBookmark', newBookmark)
  
     fetch(config.API_ENDPOINT + `/${bookmarkId}`, {
       method: 'PATCH',
@@ -91,8 +92,12 @@ static contextType = BookmarksContext;
       },
     })
     .then(res => {
-      if(!res.ok)
+      console.log('res: ', res)
+      if(!res.ok) {
         return res.json().then(error => Promise.reject(error))
+      }
+      return res.json()
+
     })
     .then(responseData => {
       console.log('response data: ', responseData)
