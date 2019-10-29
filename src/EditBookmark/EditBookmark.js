@@ -93,16 +93,12 @@ static contextType = BookmarksContext;
     })
     .then(res => {
       console.log('res: ', res)
-      if(!res.ok) {
+      if(!res.ok) 
         return res.json().then(error => Promise.reject(error))
-      }
-      return res.json()
-
-    })
-    .then(responseData => {
-      console.log('response data: ', responseData)
+      })
+    .then(() => {
       this.resetFields(newBookmark)
-      this.context.updateBookmark(responseData)
+      this.context.updateBookmark(newBookmark)
       this.props.history.push('/')
     })
     .catch(error => {
